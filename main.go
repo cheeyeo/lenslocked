@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -53,8 +56,33 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func galleryHandler(w http.ResponseWriter, r *http.Request) {
+	galleryID := chi.URLParam(r, "galleryID")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprintf(w, `<h1>Gallery PAGE</h1>
+<p>
+GALLERY TO SHOW: %s
+</p>
+`, galleryID)
+}
+
 func main() {
 	fmt.Println("Starting server...")
-	var router Router
-	http.ListenAndServe(":3000", router)
+	// var router Router
+
+	r := chi.NewRouter()
+
+	r.Get("/", homeHandler)
+	r.Get("/contact", contactHandler)
+	r.Get("/faq", faqHandler)
+	// Add middleware but only to /gallery route
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Logger)
+		r.Get("/gallery/{galleryID}", galleryHandler)
+	})
+
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "Page not found", http.StatusNotFound)
+	})
+	http.ListenAndServe(":3000", r)
 }
