@@ -14,7 +14,7 @@ go install github.com/cortesi/modd/cmd/modd@latest
 Need to check that GOPATH is set and added to PATH first:
 ```
 export GOPATH=$HOME/go
-export PATH=$GOPATH:PATH
+export PATH=$GOPATH/bin:PATH
 
 modd --version
 

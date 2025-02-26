@@ -1,0 +1,12 @@
+<h1>Hello, {{.Name}}</h1>
+<p>You are {{.Age}} years old</p>
+<p>{{.Location}}</p>
+{{ if .Hobbies }}
+<ul>
+{{ range $val := .Hobbies }}
+<li>{{ $val }}</li>
+{{ end }}
+</ul>
+{{ end }}
+<p>Home: {{ index .Contact "Home" }}</p>
+<p>Work: {{ index .Contact "Work" }}</p>
