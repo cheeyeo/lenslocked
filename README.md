@@ -42,3 +42,7 @@ In summary:
 
 3. When a function is converted into a HandlerFunc, it has a ServeHTTP method which implements the Handler interface.
 
+
+
+
+https://www.bytesizego.com/blog/guide-to-logging-in-go

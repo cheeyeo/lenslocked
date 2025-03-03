@@ -66,4 +66,31 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+
+	Demo()
+	Demo(1)
+	Demo(1, 2, 3)
+
+	fmt.Println(Sum())
+	fmt.Println(Sum(4))
+	fmt.Println(Sum(4, 5, 6))
+
+	fib := []int{1, 1, 2, 4, 5, 8}
+	Demo(fib...)
+	fmt.Println(Sum(fib...))
+}
+
+func Demo(numbers ...int) {
+	for _, number := range numbers {
+		fmt.Print(number, " ")
+	}
+	fmt.Println()
+}
+
+func Sum(numbers ...int) int {
+	sum := 0
+	for i := 0; i < len(numbers); i++ {
+		sum += numbers[i]
+	}
+	return sum
 }

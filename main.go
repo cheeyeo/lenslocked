@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/cheeyeo/lenslocked/controllers"
+	"github.com/cheeyeo/lenslocked/templates"
 	"github.com/cheeyeo/lenslocked/views"
 )
 
@@ -27,15 +27,19 @@ func main() {
 
 	r := chi.NewRouter()
 
-	tpl := views.Must(views.Parse(filepath.Join("templates", "home.gohtml")))
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.Parse(filepath.Join("templates", "contact.gohtml")))
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.Parse(filepath.Join("templates", "faq.gohtml")))
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
+	r.Get("/faq", controllers.FAQ(tpl))
+
 	// Add middleware but only to /gallery route
+	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml"))
+	r.Get("/newpage", controllers.StaticHandler(tpl))
+
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/gallery/{galleryID}", galleryHandler)
