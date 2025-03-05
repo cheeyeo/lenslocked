@@ -36,6 +36,11 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))
 	r.Get("/faq", controllers.FAQ(tpl))
 
+	var userC controllers.Users
+	userC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
+	r.Get("/signup", userC.New)
+	r.Post("/signup", userC.Create)
+
 	// Add middleware but only to /gallery route
 	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml", "tailwind.gohtml"))
 	r.Get("/newpage", controllers.StaticHandler(tpl))
