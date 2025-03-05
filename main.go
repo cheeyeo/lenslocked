@@ -27,17 +27,17 @@ func main() {
 
 	r := chi.NewRouter()
 
-	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))
 	r.Get("/faq", controllers.FAQ(tpl))
 
 	// Add middleware but only to /gallery route
-	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml", "tailwind.gohtml"))
 	r.Get("/newpage", controllers.StaticHandler(tpl))
 
 	r.Group(func(r chi.Router) {
