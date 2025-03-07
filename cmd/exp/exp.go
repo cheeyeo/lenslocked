@@ -3,9 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
-	"log"
-	"os"
+
+	"github.com/cheeyeo/lenslocked/models"
 )
 
 type User struct {
@@ -37,47 +36,28 @@ func CreateOrg() error {
 }
 
 func main() {
-	t, err := template.ParseFiles("hello.gohtml")
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	err = db.Ping()
 	if err != nil {
 		panic(err)
 	}
 
-	user := User{
-		Name:     "John Smith",
-		Age:      123,
-		Location: "UK",
-		Hobbies:  []string{"running", "reading", "music"},
-		Contact: map[string]string{
-			"Home": "123",
-			"Work": "456",
-		},
+	fmt.Println("Connected!")
+
+	us := models.UserService{
+		DB: db,
 	}
-	err = t.Execute(os.Stdout, user)
+	user, err := us.Create("bob2@bob.com", "bob123")
 	if err != nil {
 		panic(err)
 	}
-
-	err = CreateUser()
-	if err != nil {
-		log.Println(err)
-	}
-
-	err = CreateOrg()
-	if err != nil {
-		log.Println(err)
-	}
-
-	Demo()
-	Demo(1)
-	Demo(1, 2, 3)
-
-	fmt.Println(Sum())
-	fmt.Println(Sum(4))
-	fmt.Println(Sum(4, 5, 6))
-
-	fib := []int{1, 1, 2, 4, 5, 8}
-	Demo(fib...)
-	fmt.Println(Sum(fib...))
+	fmt.Println(user)
 }
 
 func Demo(numbers ...int) {

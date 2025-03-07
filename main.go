@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/cheeyeo/lenslocked/controllers"
+	"github.com/cheeyeo/lenslocked/models"
 	"github.com/cheeyeo/lenslocked/templates"
 	"github.com/cheeyeo/lenslocked/views"
 )
@@ -36,10 +37,27 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))
 	r.Get("/faq", controllers.FAQ(tpl))
 
-	var userC controllers.Users
-	userC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
-	r.Get("/signup", userC.New)
-	r.Post("/signup", userC.Create)
+	// Setup database connection
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	// Setup model services
+	userService := models.UserService{
+		DB: db,
+	}
+	usersC := controllers.Users{
+		UserService: &userService,
+	}
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
+	usersC.Templates.Signin = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "tailwind.gohtml"))
+	r.Get("/signup", usersC.New)
+	r.Get("/signin", usersC.Signin)
+	r.Post("/signin", usersC.ProcessSignIn)
+	r.Post("/signup", usersC.Create)
 
 	// Add middleware but only to /gallery route
 	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml", "tailwind.gohtml"))
