@@ -5,6 +5,9 @@
       Create an account
     </h1>
         <form action="/signup" method="post">
+            <div class="hidden">
+              {{csrfField}}
+            </div>
             <div class="py-2">
                 <label for="email">Email Address</label>
                 <input name="email" id="email" type="email" placeholder="email address" required autocomplete="email" value="{{.Email}}" class="w-full px-3 py-2 border border-gray-300 placeholder-gray-500

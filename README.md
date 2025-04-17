@@ -14,7 +14,7 @@ go install github.com/cortesi/modd/cmd/modd@latest
 Need to check that GOPATH is set and added to PATH first:
 ```
 export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:PATH
+export PATH=$GOPATH/bin:$PATH
 
 modd --version
 
@@ -82,6 +82,8 @@ tives scrypt and argon2 are also great choices, albeit a little harder to use wi
 Go
 
 
+#### CSRF
+
 
 
 
@@ -89,4 +91,6 @@ Go
 
 ### REF
 
-https://www.bytesizego.com/blog/guide-to-logging-in-go
+[Logging in go]: https://www.bytesizego.com/blog/guide-to-logging-in-go
+
+[Using CSRF middleware]: https://github.com/gorilla/csrf

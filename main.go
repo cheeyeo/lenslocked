@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/gorilla/csrf"
 
 	"github.com/cheeyeo/lenslocked/controllers"
 	"github.com/cheeyeo/lenslocked/models"
@@ -58,6 +59,7 @@ func main() {
 	r.Get("/signin", usersC.Signin)
 	r.Post("/signin", usersC.ProcessSignIn)
 	r.Post("/signup", usersC.Create)
+	r.Get("/users/me", usersC.CurrentUser)
 
 	// Add middleware but only to /gallery route
 	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml", "tailwind.gohtml"))
@@ -72,5 +74,13 @@ func main() {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
 	fmt.Println("starting server on port 3000...")
-	http.ListenAndServe(":3000", r)
+
+	// Add CSRF Middleware
+	csrfKey := "gFvi45R4fy5xNBlnEeZtQbfAVCYEIAUX"
+	csrfMW := csrf.Protect(
+		[]byte(csrfKey),
+		// TODO: Fix before deployment
+		csrf.Secure(false),
+	)
+	http.ListenAndServe(":3000", csrfMW(r))
 }
