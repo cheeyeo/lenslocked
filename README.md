@@ -2,6 +2,10 @@
 
 Building a web app in go from scratch
 
+### Running postgresql container
+```
+docker compose -f cmd/exp/compose.yml up
+```
 
 ### Reload
 
@@ -94,3 +98,5 @@ Go
 [Logging in go]: https://www.bytesizego.com/blog/guide-to-logging-in-go
 
 [Using CSRF middleware]: https://github.com/gorilla/csrf
+
+[Using postgresql container]: https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/
