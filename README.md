@@ -67,6 +67,9 @@ To handle passwords securely in web apps:
 
 Always use password specific hashing function when setting up an authentication system
 
+While it might be tempting to use bcrypt like we did with our passwords for hashing session tokens, this approach isn’t a good fit for session tokens. When using bcrypt, every hash has a unique salt added to it. This means we wouldn’t be able to hash a session token and then search our database for it, as it would have a different salt value.
+This helps prevent rainbow table attacks, but we only need to worry about those with passwords, not session tokens
+
 ### Encryption functions are not hashing functions
 
 At some point you may learn about encryption functions like AES, and at first
