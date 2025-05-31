@@ -1,0 +1,23 @@
+{{ template "header" .}}
+<div class="py-12 flex justify-center">
+  <div class="px-8 py-8 bg-white rounded shadow">
+    <h1 class="pt-4 pb-8 text-center text-3xl font-bold text-gray-900">
+      Dashboard
+    </h1>
+  <div class="py-8">
+    <p>User ID: {{.ID}}</p>
+  </div>
+  <div class="py-8">
+    <p>User Email: {{.Email}}</p>
+  </div>
+  <div class="py-8">
+  <form action="/signout" method="post" class="inline pr-4">
+    <div class="hidden">
+      {{csrfField}}
+    </div>
+    <button type="submit">Sign Out</button>
+  </form>
+  </div>
+</div>
+</div>
+{{ template "footer" . }}

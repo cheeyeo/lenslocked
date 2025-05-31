@@ -59,6 +59,7 @@ func main() {
 	}
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
 	usersC.Templates.Signin = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "tailwind.gohtml"))
+	usersC.Templates.Current = views.Must(views.ParseFS(templates.FS, "current.gohtml", "tailwind.gohtml"))
 	r.Get("/signup", usersC.New)
 	r.Get("/signin", usersC.Signin)
 	r.Post("/signin", usersC.ProcessSignIn)
