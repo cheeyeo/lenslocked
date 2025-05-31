@@ -89,8 +89,24 @@ tives scrypt and argon2 are also great choices, albeit a little harder to use wi
 Go
 
 
+#### On using sql.DB Exec vs QueryrOW
+
+If we only want to run a single SQL query and don't care about the return value, use sql.DB.Exec
+
+If we want to process the returned rows, use sql.DB.QueryRow
+
+
+
+
 #### CSRF
 
+TODO
+
+Issue with gorilla csrf middleware:
+
+https://github.com/gorilla/csrf/issues/190
+
+Throws invalid origin if using v1.7.3
 
 
 

@@ -64,11 +64,12 @@ func main() {
 	r.Post("/signin", usersC.ProcessSignIn)
 	r.Post("/signup", usersC.Create)
 	r.Get("/users/me", usersC.CurrentUser)
+	r.Post("/signout", usersC.ProcessSignOut)
 
-	// Add middleware but only to /gallery route
 	tpl = views.Must(views.ParseFS(templates.FS, "newpage.gohtml", "tailwind.gohtml"))
 	r.Get("/newpage", controllers.StaticHandler(tpl))
 
+	// Add middleware but only to /gallery route
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/gallery/{galleryID}", galleryHandler)
@@ -87,4 +88,5 @@ func main() {
 		csrf.Secure(false),
 	)
 	http.ListenAndServe(":3000", csrfMW(r))
+	// http.ListenAndServe(":3000", r)
 }
